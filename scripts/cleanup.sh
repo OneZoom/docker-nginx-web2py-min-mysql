@@ -1,0 +1,14 @@
+#!/bin/bash
+set -e
+export LC_ALL=C
+export DEBIAN_FRONTEND=noninteractive
+
+if [ "$DEBUG" == true ]; then
+  set -x
+fi
+
+apt-get clean
+rm -rf /build
+rm -rf /tmp/* /var/tmp/*
+rm -rf /var/lib/apt/lists/*
+rm -f /etc/dpkg/dpkg.cfg.d/02apt-speedup
