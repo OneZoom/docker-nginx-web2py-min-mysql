@@ -133,9 +133,36 @@ docker run -d -t \
   madharjan/docker-mysql:5.5 /sbin/my_init
 ```
 
-**Restart `mysql`** (runit service)
+**Systemd Unit File**
 ```
-docker exec -t \
-  mysql \
-  /bin/bash -c "/usr/bin/sv stop mysql; sleep 1; /usr/bin/sv start mysql;"
+[Unit]
+Description=MySQL Server
+
+After=docker.service
+
+[Service]
+TimeoutStartSec=0
+
+ExecStartPre=-/bin/mkdir -p /opt/docker/mysql/etc/conf.d
+ExecStartPre=-/bin/mkdir -p /opt/docker/mysql/lib
+ExecStartPre=-/bin/mkdir -p /opt/docker/mysql/log
+ExecStartPre=-/usr/bin/docker stop mysql
+ExecStartPre=-/usr/bin/docker rm mysql
+ExecStartPre=-/usr/bin/docker pull madharjan/docker-mysql:5.5
+
+ExecStart=/usr/bin/docker run \
+  -e MYSQL_DB_NAME=mydb \
+  -e MYSQL_DB_USERNAME=user \
+  -e MYSQL_DB_PASSWORD=pass \
+  -p 172.17.0.1:3306:3306 \
+  -v /opt/docker/mysql/etc/conf.d:/etc/mysql/conf.d \
+  -v /opt/docker/mysql/lib/:/var/lib \
+  -v /opt/docker/mysql/log:/var/log/mysql \
+  --name mysql \
+  madharjan/docker-mysql:5.5 /sbin/my_init
+
+ExecStop=/usr/bin/docker stop -t 2 nginx
+
+[Install]
+WantedBy=multi-user.target
 ```

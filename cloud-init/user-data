@@ -35,6 +35,7 @@ packages:
   - ca-certificates
   - apparmor
   - docker-engine
+  - mysql-client
 write_files:
   - path: /tmp/cloud-init/init.sh
     permissions: '0755'

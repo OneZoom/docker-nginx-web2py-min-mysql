@@ -5,7 +5,7 @@ PWD=`pwd`
 
 echo " --> Starting container"
 ID=`docker run -d -v $PWD/test:/test $NAME:$VERSION /sbin/my_init`
-sleep 1
+sleep 5
 
 echo " --> Checking whether all services are running..."
 docker exec -t $ID /bin/bash /test/status.sh
