@@ -69,7 +69,7 @@ if [ -n "${MYSQL_DB_NAME}" -o -n "${MYSWL_DB_USERNAME}" ]; then
       -e "CREATE DATABASE IF NOT EXISTS \`${MYSQL_DB_NAME}\` DEFAULT CHARACTER SET \`${MYSQL_CHARSET}\` COLLATE \`${MYSQL_COLLATION}\`;"
 
     if [ -n "${MYSQL_DB_USERNAME}" ]; then
-      echo "Granting acess to database \"${MYSQL_DB_NAME}\" for user \"${MYSQL_DB_USERNAME}\"..."
+      echo "Granting access to database \"${MYSQL_DB_NAME}\" for user \"${MYSQL_DB_USERNAME}\"..."
       mysql --defaults-file=/etc/mysql/debian.cnf \
         -e "GRANT ALL PRIVILEGES on \`${MYSQL_DB_NAME}\`.* TO '${MYSQL_DB_USERNAME}' IDENTIFIED BY '${MYSQL_DB_PASSWORD}';"
     fi
