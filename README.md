@@ -1,4 +1,7 @@
 # docker-mysql
+
+[![](https://images.microbadger.com/badges/image/madharjan/docker-mysql.svg)](http://microbadger.com/images/madharjan/docker-mysql "Get your own image badge on microbadger.com")
+
 Docker container for MySQL Server based on [madharjan/docker-base](https://github.com/madharjan/docker-base/)
 
 * MySQL Server 5.7 (docker-mysql)

@@ -7,10 +7,10 @@ VERSION = 5.5
 all: build
 
 build:
-	docker build --build-arg MYSQL_VERSION=$(VERSION) -t $(NAME):$(VERSION) --rm .
+	docker build --build-arg MYSQL_VERSION=$(VERSION) --build-arg VCS_REF=`git rev-parse --short HEAD` -t $(NAME):$(VERSION) --rm .
 
 build_test:
-	docker build --build-arg MYSQL_VERSION=$(VERSION) --build-arg DEBUG=true -t $(NAME):$(VERSION) --rm .
+	docker build --build-arg MYSQL_VERSION=$(VERSION) --build-arg VCS_REF=`git rev-parse --short HEAD` --build-arg DEBUG=true -t $(NAME):$(VERSION) --rm .
 
 clean_images:
 	docker rmi $(NAME):latest $(NAME):$(VERSION) || true

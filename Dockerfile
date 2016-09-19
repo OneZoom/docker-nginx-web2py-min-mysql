@@ -1,10 +1,12 @@
 FROM madharjan/docker-base:14.04
 MAINTAINER Madhav Raj Maharjan <madhav.maharjan@gmail.com>
 
-LABEL description="Docker container for MySQL Server" os_version="Ubuntu 14.04"
-
+ARG VCS_REF
 ARG MYSQL_VERSION
 ARG DEBUG=false
+
+LABEL description="Docker container for MySQL Server" os_version="Ubuntu ${UBUNTU_VERSION}" \
+      org.label-schema.vcs-ref=${VCS_REF} org.label-schema.vcs-url="https://github.com/madharjan/docker-mysql"
 
 ENV MYSQL_VERSION ${MYSQL_VERSION}
 
