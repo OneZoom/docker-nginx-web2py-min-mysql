@@ -3,7 +3,7 @@ MAINTAINER Madhav Raj Maharjan <madhav.maharjan@gmail.com>
 
 LABEL description="Docker container for MySQL Server" os_version="Ubuntu 14.04"
 
-ENV HOME /var/lib/mysql
+ARG MYSQL_VERSION
 ARG DEBUG=false
 
 RUN mkdir -p /build

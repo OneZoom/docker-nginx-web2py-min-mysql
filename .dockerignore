@@ -1,0 +1,7 @@
+*.md
+test
+LICENSE
+Makefile
+Vagrantfile
+.DS_Store
+*.swp

@@ -65,9 +65,9 @@ docker stop mysql
 docker rm mysql
 
 docker run -d -t \
-  -e MYSQL_DB_NAME=mydb \
-  -e MYSQL_DB_USERNAME=user \
-  -e MYSQL_DB_PASSWORD=pass \
+  -e MYSQL_DATABASE=mydb \
+  -e MYSQL_USERNAME=user \
+  -e MYSQL_PASSWORD=pass \
   -p 3306:3306 \
   -v /opt/docker/mysql/etc/conf.d:/etc/mysql/conf.d \
   -v /opt/docker/mysql/lib:/var/lib/mysql \
@@ -94,9 +94,10 @@ ExecStartPre=-/usr/bin/docker rm mysql
 ExecStartPre=-/usr/bin/docker pull madharjan/docker-mysql:5.5
 
 ExecStart=/usr/bin/docker run \
-  -e MYSQL_DB_NAME=mydb \
-  -e MYSQL_DB_USERNAME=user \
-  -e MYSQL_DB_PASSWORD=pass \
+  -e MYSQL_DATABASE=mydb \
+  -e MYSQL_USERNAME=user \
+  -e MYSQL_PASSWORD=pass \
+  -p 3306:3306 \
   -p 172.17.0.1:3306:3306 \
   -v /opt/docker/mysql/etc/conf.d:/etc/mysql/conf.d \
   -v /opt/docker/mysql/lib/:/var/lib \
