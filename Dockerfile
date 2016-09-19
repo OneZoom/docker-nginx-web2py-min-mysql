@@ -6,6 +6,8 @@ LABEL description="Docker container for MySQL Server" os_version="Ubuntu 14.04"
 ARG MYSQL_VERSION
 ARG DEBUG=false
 
+ENV MYSQL_VERSION ${MYSQL_VERSION}
+
 RUN mkdir -p /build
 COPY . /build
 

@@ -44,7 +44,7 @@ git push origin 5.5
 ```
 docker run -d -t \
   --name mysql \
-  madharjan/docker-mysql:5.5 /sbin/my_init
+  madharjan/docker-mysql:5.5
 ```
 
 **Prepare folder on host for container volumes**
@@ -73,7 +73,7 @@ docker run -d -t \
   -v /opt/docker/mysql/lib:/var/lib/mysql \
   -v /opt/docker/mysql/log:/var/log/mysql \
   --name mysql \
-  madharjan/docker-mysql:5.5 /sbin/my_init
+  madharjan/docker-mysql:5.5
 ```
 
 **Systemd Unit File**
@@ -103,7 +103,7 @@ ExecStart=/usr/bin/docker run \
   -v /opt/docker/mysql/lib/:/var/lib \
   -v /opt/docker/mysql/log:/var/log/mysql \
   --name mysql \
-  madharjan/docker-mysql:5.5 /sbin/my_init
+  madharjan/docker-mysql:5.5
 
 ExecStop=/usr/bin/docker stop -t 2 nginx
 
