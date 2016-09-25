@@ -6,6 +6,13 @@ Docker container for MySQL Server based on [madharjan/docker-base](https://githu
 
 * MySQL Server 5.7 (docker-mysql)
 
+| Variable        | Default      | Example        |
+|-----------------|--------------|----------------|
+| DISABLE_MYSQL   | 0            | 1 (to disable) |
+| MYSQL_DATABASE  | temp         | mydb           |
+| MYSQL_USERNAME  | mysql        | myuser         |
+| MYSQL_PASSWORD  | mysql        | mypass         |
+
 ## Build
 
 **Clone this project**
@@ -23,7 +30,9 @@ docker login
 make
 
 # test
-make test
+make run
+make tests
+make clean
 
 # tag
 make tag_latest
@@ -43,13 +52,6 @@ git push origin 5.5
 
 ### MySQL
 
-**Run `docker-mysql` container**
-```
-docker run -d -t \
-  --name mysql \
-  madharjan/docker-mysql:5.5
-```
-
 **Prepare folder on host for container volumes**
 ```
 sudo mkdir -p /opt/docker/mysql/etc/conf.d
@@ -57,12 +59,7 @@ sudo mkdir -p /opt/docker/mysql/lib/
 sudo mkdir -p /opt/docker/mysql/log/
 ```
 
-**Copy default configuration to host**
-```
-sudo docker exec mysql tar Ccf /etc/mysql - conf.d | tar Cxf /opt/docker/mysql/etc -
-```
-
-**Run `docker-mysql` with updated configuration**
+**Run `docker-mysql`**
 ```
 docker stop mysql
 docker rm mysql
@@ -101,14 +98,13 @@ ExecStart=/usr/bin/docker run \
   -e MYSQL_USERNAME=user \
   -e MYSQL_PASSWORD=pass \
   -p 3306:3306 \
-  -p 172.17.0.1:3306:3306 \
   -v /opt/docker/mysql/etc/conf.d:/etc/mysql/conf.d \
   -v /opt/docker/mysql/lib/:/var/lib \
   -v /opt/docker/mysql/log:/var/log/mysql \
   --name mysql \
   madharjan/docker-mysql:5.5
 
-ExecStop=/usr/bin/docker stop -t 2 nginx
+ExecStop=/usr/bin/docker stop -t 2 mysql
 
 [Install]
 WantedBy=multi-user.target

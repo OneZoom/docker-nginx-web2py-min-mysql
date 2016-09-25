@@ -13,12 +13,28 @@ MYSQL_PASSWORD=${MYSQL_DB_PASSWORD:-mysql}
 MYSQL_CHARSET=${MYSQL_CHARSET:-utf8}
 MYSQL_COLLATION=${MYSQL_COLLATION:-utf8_unicode_ci}
 
-MYSQL_USER=${MYSQL_USER:-mysql}
+MYSQL_USER=mysql
 MYSQL_DATA_DIR=${MYSQL_DATA_DIR:-/var/lib/mysql}
 
 mkdir -p ${MYSQL_DATA_DIR}
 chmod -R 0700 ${MYSQL_DATA_DIR}
 chown -R ${MYSQL_USER}:${MYSQL_USER} ${MYSQL_DATA_DIR}
+
+DISABLE_MYSQL=${DISABLE_MYSQL:-0}
+
+if [ ! "${DISABLE_MYSQL}" -eq 0 ]; then
+  touch /etc/service/mysql/down
+else
+  rm -f /etc/service/mysql/down
+fi
+
+if [ ! -f "/etc/mysql/conf.d/mysqld-skip-name-resolv.cnf" ]; then
+  cp /config/etc/mysql/conf.d/mysqld-skip-name-resolv.cnf /etc/mysql/conf.d/mysqld-skip-name-resolv.cnf
+fi
+
+if [ ! -f "/etc/mysql/conf.d/mysqld-bind-address.cnf" ]; then
+  cp /config/etc/mysql/conf.d/mysqld-bind-address.cnf /etc/mysql/conf.d/mysqld-bind-address.cnf
+fi
 
 # Blank password for debian-sys-maint user
 sed 's/password = .*/password =  /g' -i /etc/mysql/debian.cnf

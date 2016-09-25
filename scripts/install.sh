@@ -14,8 +14,9 @@ apt-get update
 ## Install MySQL and runit service
 /build/services/mysql/mysql.sh
 
-cp ${MYSQL_CONFIG_PATH}/mysqld-skip-name-resolv.cnf /etc/mysql/conf.d/
-cp ${MYSQL_CONFIG_PATH}/mysqld-bind-address.cnf /etc/mysql/conf.d/
+mkdir -p /config/etc/mysql/conf.d
+cp ${MYSQL_CONFIG_PATH}/mysqld-skip-name-resolv.cnf /config/etc/mysql/conf.d/
+cp ${MYSQL_CONFIG_PATH}/mysqld-bind-address.cnf /config/etc/mysql/conf.d/
 
 mkdir -p /etc/my_init.d
 cp /build/services/mysql-startup.sh /etc/my_init.d
