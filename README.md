@@ -64,7 +64,7 @@ sudo mkdir -p /opt/docker/mysql/log/
 docker stop mysql
 docker rm mysql
 
-docker run -d -t \
+docker run -d \
   -e MYSQL_DATABASE=mydb \
   -e MYSQL_USERNAME=user \
   -e MYSQL_PASSWORD=pass \

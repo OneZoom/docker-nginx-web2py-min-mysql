@@ -18,33 +18,33 @@ run:
 	mkdir -p /tmp/mysql/etc
 	mkdir -p /tmp/mysql/lib
 
-	docker run -d -t \
+	docker run -d \
 		-e MYSQL_DATABASE=mydb \
 		-e MYSQL_USERNAME=user \
 		-e MYSQL_PASSWORD=pass \
 		-v /tmp/mysql/etc:/etc/mysql/conf.d \
 		-v /tmp/mysql/lib:/var/lib/mysql \
 		-e DEBUG=true \
-		--name mysql -t $(NAME):$(VERSION)
+		--name mysql $(NAME):$(VERSION)
 
-	docker run -d -t \
+	docker run -d \
 		-e DISABLE_MYSQL=1 \
 		-e DEBUG=true \
-		--name mysql_no_mysql -t $(NAME):$(VERSION)
+		--name mysql_no_mysql $(NAME):$(VERSION)
 
-	docker run -d -t \
+	docker run -d \
 		-e DEBUG=true \
-		--name mysql_default -t $(NAME):$(VERSION)
+		--name mysql_default $(NAME):$(VERSION)
 		sleep 3
 
 tests:
 	./bats/bin/bats test/tests.bats
 
 clean:
-	docker exec -t mysql /bin/bash -c "sv stop mysql" || true
+	docker exec mysql /bin/bash -c "sv stop mysql" || true
 	sleep 2
-	docker exec -t mysql /bin/bash -c "rm -rf /etc/mysql/conf.d/*" || true
-	docker exec -t mysql /bin/bash -c "rm -rf /var/lib/mysql//*" || true
+	docker exec mysql /bin/bash -c "rm -rf /etc/mysql/conf.d/*" || true
+	docker exec mysql /bin/bash -c "rm -rf /var/lib/mysql//*" || true
 	docker stop mysql mysql_no_mysql mysql_default || true
 	docker rm mysql mysql_no_mysql mysql_default || true
 	rm -rf /tmp/mysql || true
