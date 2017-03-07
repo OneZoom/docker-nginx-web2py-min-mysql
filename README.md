@@ -4,7 +4,11 @@
 
 Docker container for MySQL Server based on [madharjan/docker-base](https://github.com/madharjan/docker-base/)
 
-* MySQL Server 5.7 (docker-mysql)
+**Features**
+* Environment variables to create database, user and set password
+* Bats ([sstephenson/bats](https://github.com/sstephenson/bats/)) based test cases
+
+## MySQL Server 5.7 (docker-mysql)
 
 | Variable        | Default      | Example        |
 |-----------------|--------------|----------------|
