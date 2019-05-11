@@ -128,9 +128,9 @@ WantedBy=multi-user.target
 | PORT                | 80               | 8080                                                             |
 | VOLUME_HOME         | /opt/docker      | /opt/data                                                        |
 | VERSION             | 1.10.3           | latest                                                           |
-| MYSQL_DATABASE      | mydb             | my_db                                                            |
-| MYSQL_USERNAME      | user             | db_user                                                          |
-| MYSQL_PASSWORD      | pass             | Pa55w0rd                                                         |
+| MYSQL_DATABASE      | temp             | mydb                                                            |
+| MYSQL_USERNAME      | mysql            | user                                                          |
+| MYSQL_PASSWORD      | mysql            | pass                                                         |
 
 ```bash
 docker run --rm -it \
