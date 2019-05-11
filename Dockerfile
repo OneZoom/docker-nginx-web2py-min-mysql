@@ -1,4 +1,4 @@
-FROM madharjan/docker-base:14.04
+FROM madharjan/docker-base:16.04
 MAINTAINER Madhav Raj Maharjan <madhav.maharjan@gmail.com>
 
 ARG VCS_REF

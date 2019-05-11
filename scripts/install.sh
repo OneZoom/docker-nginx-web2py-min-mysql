@@ -19,5 +19,8 @@ cp ${MYSQL_CONFIG_PATH}/mysqld-skip-name-resolv.cnf /config/etc/mysql/conf.d/
 cp ${MYSQL_CONFIG_PATH}/mysqld-bind-address.cnf /config/etc/mysql/conf.d/
 
 mkdir -p /etc/my_init.d
-cp /build/services/mysql-startup.sh /etc/my_init.d
-chmod 750 /etc/my_init.d/mysql-startup.sh
+cp /build/services/20-mysql.sh /etc/my_init.d
+chmod 750 /etc/my_init.d/20-mysql.sh
+
+cp /build/bin/mysql-systemd-unit /usr/local/bin
+chmod 750 /usr/local/bin/mysql-systemd-unit

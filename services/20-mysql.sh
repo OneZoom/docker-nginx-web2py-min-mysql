@@ -15,10 +15,20 @@ MYSQL_COLLATION=${MYSQL_COLLATION:-utf8_unicode_ci}
 
 MYSQL_USER=mysql
 MYSQL_DATA_DIR=${MYSQL_DATA_DIR:-/var/lib/mysql}
+MYSQL_LOG_DIR=/var/log/mysql/
+MYSQL_RUN_DIR=/var/run/mysqld/
 
 mkdir -p ${MYSQL_DATA_DIR}
 chmod -R 0700 ${MYSQL_DATA_DIR}
 chown -R ${MYSQL_USER}:${MYSQL_USER} ${MYSQL_DATA_DIR}
+
+mkdir -p ${MYSQL_RUN_DIR}
+chmod -R 0755 ${MYSQL_RUN_DIR}
+chown -R ${MYSQL_USER}:root ${MYSQL_RUN_DIR}
+
+mkdir -p ${MYSQL_LOG_DIR}
+chmod -R 0755 ${MYSQL_LOG_DIR}
+chown -R ${MYSQL_USER}:root ${MYSQL_LOG_DIR}
 
 DISABLE_MYSQL=${DISABLE_MYSQL:-0}
 
@@ -28,11 +38,15 @@ else
   rm -f /etc/service/mysql/down
 fi
 
-if [ ! -f "/etc/mysql/conf.d/mysqld-skip-name-resolv.cnf" ]; then
+if [ -f "/etc/mysql/conf.d/mysqld-skip-name-resolv.cnf" ]; then
+  echo "mysqld-skip-name-resolv.cnf already exists"
+else 
   cp /config/etc/mysql/conf.d/mysqld-skip-name-resolv.cnf /etc/mysql/conf.d/mysqld-skip-name-resolv.cnf
 fi
 
-if [ ! -f "/etc/mysql/conf.d/mysqld-bind-address.cnf" ]; then
+if [ -f "/etc/mysql/conf.d/mysqld-bind-address.cnf" ]; then
+  echo "mysqld-bind-address.cnf already exists"
+else
   cp /config/etc/mysql/conf.d/mysqld-bind-address.cnf /etc/mysql/conf.d/mysqld-bind-address.cnf
 fi
 
@@ -41,7 +55,7 @@ sed 's/password = .*/password =  /g' -i /etc/mysql/debian.cnf
 
 if [ ! -d ${MYSQL_DATA_DIR}/mysql ]; then
   echo "Initializing database ..."
-  mysql_install_db --user=${MYSQL_USER} >/dev/null 2>&1
+  mysqld --initialize-insecure --user=${MYSQL_USER} 
   echo "Starting MySQL Server ..."
   /usr/bin/mysqld_safe >/dev/null 2>&1 &
 
@@ -54,10 +68,13 @@ if [ ! -d ${MYSQL_DATA_DIR}/mysql ]; then
       echo -e "\nCould not connect to database server. Aborting..."
       exit 1
     fi
+    echo -n "."
+    sleep 1
   done
   echo
 
   echo "Creating debian-sys-maint user ..."
+  mysql -uroot -e "CREATE USER 'debian-sys-maint'@'localhost' IDENTIFIED BY '';"
   mysql -uroot -e "GRANT ALL PRIVILEGES on *.* TO 'debian-sys-maint'@'localhost' IDENTIFIED BY '' WITH GRANT OPTION;"
 
   /usr/bin/mysqladmin --defaults-file=/etc/mysql/debian.cnf shutdown

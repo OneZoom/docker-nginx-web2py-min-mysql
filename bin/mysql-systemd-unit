@@ -1,0 +1,55 @@
+#!/bin/sh
+
+set e
+
+if [ "${DEBUG}" = true ]; then
+  set -x
+fi
+
+DEF_PORT=80
+DEF_VOLUME_HOME=${VOLUME_HOME}
+DEF_VERSION=1.10.3
+DEF_MYSQL_DATABASE=
+DEF_MYSQL_USERNAME=
+DEF_MYSQL_PASSWORD=
+
+PORT=${PORT:-$DEF_PORT}
+VOLUME_HOME=${VOLUME_HOME:-$DEF_VOLUME_HOME}
+VERSION=${VERSION:-$DEF_VERSION}
+
+MYSQL_DATABASE=${MYSQL_DATABASE:-$DEF_MYSQL_DATABASE}
+MYSQL_USERNAME=${MYSQL_USERNAME:-$DEF_MYSQL_USERNAME}
+MYSQL_PASSWORD=${MYSQL_PASSWORD:-$DEF_MYSQL_PASSWORD}
+
+/bin/cat <<-EOF
+[Unit]
+Description=MySQL Server
+
+After=docker.service
+
+[Service]
+TimeoutStartSec=0
+
+ExecStartPre=-/bin/mkdir -p ${VOLUME_HOME}/mysql/etc/conf.d
+ExecStartPre=-/bin/mkdir -p ${VOLUME_HOME}/mysql/lib
+ExecStartPre=-/bin/mkdir -p ${VOLUME_HOME}/mysql/log
+ExecStartPre=-/usr/bin/docker stop mysql
+ExecStartPre=-/usr/bin/docker rm mysql
+ExecStartPre=-/usr/bin/docker pull madharjan/docker-mysql:5.7
+
+ExecStart=/usr/bin/docker run \\
+  -e MYSQL_DATABASE=${MYSQL_DATABASE} \\
+  -e MYSQL_USERNAME=${MYSQL_USERNAME} \\
+  -e MYSQL_PASSWORD=${MYSQL_PASSWORD} \\
+  -p ${PORT}:3306 \\
+  -v ${VOLUME_HOME}/mysql/etc/conf.d:/etc/mysql/conf.d \\
+  -v ${VOLUME_HOME}/mysql/lib/:/var/lib \\
+  -v ${VOLUME_HOME}/mysql/log:/var/log/mysql \\
+  --name mysql \\
+  madharjan/docker-mysql:5.7
+
+ExecStop=/usr/bin/docker stop -t 2 mysql
+
+[Install]
+WantedBy=multi-user.target
+EOF
