@@ -42,10 +42,10 @@ run:
 		-e DEBUG=$(DEBUG) \
 		--name mysql_default $(NAME):$(VERSION)
 
-	sleep 3
+	sleep 4
 
 tests:
-	sleep 3
+	sleep 6
 	./bats/bin/bats test/tests.bats
 
 stop:
