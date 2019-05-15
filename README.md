@@ -125,7 +125,7 @@ WantedBy=multi-user.target
 
 | Variable            | Default          | Example                                                          |
 |---------------------|------------------|------------------------------------------------------------------|
-| PORT                | 80               | 8080                                                             |
+| PORT                | 3306             | 8080                                                             |
 | VOLUME_HOME         | /opt/docker      | /opt/data                                                        |
 | VERSION             | 1.10.3           | latest                                                           |
 | MYSQL_DATABASE      | temp             | mydb                                                            |
