@@ -58,6 +58,7 @@ stop:
 clean: stop
 	docker rm mysql mysql_no_mysql mysql_default || true
 	rm -rf /tmp/mysql || true
+	docker images | grep "^<none>" | awk '{print$3 }' | xargs docker rmi || true
 
 tag_latest:
 	docker tag $(NAME):$(VERSION) $(NAME):latest
