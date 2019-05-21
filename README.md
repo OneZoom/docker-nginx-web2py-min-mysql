@@ -12,6 +12,8 @@ Docker container for MySQL Server based on [madharjan/docker-base](https://githu
 
 ## MySQL Server 5.7 (docker-mysql)
 
+### Environment
+
 | Variable        | Default      | Example        |
 |-----------------|--------------|----------------|
 | DISABLE_MYSQL   | 0            | 1 (to disable) |
@@ -21,57 +23,37 @@ Docker container for MySQL Server based on [madharjan/docker-base](https://githu
 
 ## Build
 
-### Clone this project
-
 ```bash
+# clone project
 git clone https://github.com/madharjan/docker-mysql
 cd docker-mysql
-```
-
-### Build Containers
-
-```bash
-# login to DockerHub
-docker login
 
 # build
 make
 
 # tests
 make run
-make tests
+make test
+
+# clean
 make clean
-
-# tag
-make tag_latest
-
-# release
-make release
 ```
 
-### Tag and Commit to Git
+## Run
+
+**Note**: update environment variables below as necessary
 
 ```bash
-git tag 5.7
-git push origin 5.7
-```
-
-## Run Container
-
-### Prepare folder on host for container volumes
-
-```bash
+# prepare foldor on host for container volumes
 sudo mkdir -p /opt/docker/mysql/etc/conf.d
 sudo mkdir -p /opt/docker/mysql/lib/
 sudo mkdir -p /opt/docker/mysql/log/
-```
 
-### Run `docker-mysql`
-
-```bash
+# stop & remove previous instances
 docker stop mysql
 docker rm mysql
 
+# run container
 docker run -d \
   -e MYSQL_DATABASE=mydb \
   -e MYSQL_USERNAME=user \
@@ -84,9 +66,9 @@ docker run -d \
   madharjan/docker-mysql:5.5
 ```
 
-## Run via Systemd
+## Systemd Unit File
 
-### Systemd Unit File - basic example
+**Note**: update environment variables below as necessary
 
 ```txt
 [Unit]
@@ -102,7 +84,7 @@ ExecStartPre=-/bin/mkdir -p /opt/docker/mysql/lib
 ExecStartPre=-/bin/mkdir -p /opt/docker/mysql/log
 ExecStartPre=-/usr/bin/docker stop mysql
 ExecStartPre=-/usr/bin/docker rm mysql
-ExecStartPre=-/usr/bin/docker pull madharjan/docker-mysql:5.5
+ExecStartPre=-/usr/bin/docker pull madharjan/docker-mysql:5.7
 
 ExecStart=/usr/bin/docker run \
   -e MYSQL_DATABASE=mydb \
@@ -110,10 +92,10 @@ ExecStart=/usr/bin/docker run \
   -e MYSQL_PASSWORD=pass \
   -p 3306:3306 \
   -v /opt/docker/mysql/etc/conf.d:/etc/mysql/conf.d \
-  -v /opt/docker/mysql/lib/:/var/lib \
+  -v /opt/docker/mysql/lib/:/var/lib/mysql \
   -v /opt/docker/mysql/log:/var/log/mysql \
   --name mysql \
-  madharjan/docker-mysql:5.5
+  madharjan/docker-mysql:5.7
 
 ExecStop=/usr/bin/docker stop -t 2 mysql
 
@@ -121,27 +103,28 @@ ExecStop=/usr/bin/docker stop -t 2 mysql
 WantedBy=multi-user.target
 ```
 
-### Generate Systemd Unit File
+## Generate Systemd Unit File
 
 | Variable            | Default          | Example                                                          |
 |---------------------|------------------|------------------------------------------------------------------|
 | PORT                | 3306             | 8080                                                             |
 | VOLUME_HOME         | /opt/docker      | /opt/data                                                        |
-| VERSION             | 1.10.3           | latest                                                           |
-| MYSQL_DATABASE      | temp             | mydb                                                            |
-| MYSQL_USERNAME      | mysql            | user                                                          |
-| MYSQL_PASSWORD      | mysql            | pass                                                         |
+| NAME                | mysql            | docker-mysql                                                           |
+| MYSQL_DATABASE      | temp             | mydb                                                             |
+| MYSQL_USERNAME      | mysql            | user                                                             |
+| MYSQL_PASSWORD      | mysql            | pass                                                             |
 
 ```bash
-docker run --rm -it \
+# generate postgresql.service
+docker run --rm \
   -e PORT=3306 \
   -e VOLUME_HOME=/opt/docker \
-  -e VERSION=5.7 \
+  -e NAME=docker-mysql \
   -e MYSQL_DATABASE=mydb \
   -e MYSQL_USERNAME=user \
   -e MYSQL_PASSWORD=pass \
   madharjan/docker-mysql:5.7 \
-  /bin/sh -c "mysql-systemd-unit" | \
+  mysql-systemd-unit | \
   sudo tee /etc/systemd/system/mysql.service
 
 sudo systemctl enable mysql

@@ -7,8 +7,8 @@ if [ "${DEBUG}" = true ]; then
 fi
 
 MYSQL_DATABASE=${MYSQL_DATABASE:-temp}
-MYSQL_USERNAME=${MYSQL_DB_USERNAME:-mysql}
-MYSQL_PASSWORD=${MYSQL_DB_PASSWORD:-mysql}
+MYSQL_USERNAME=${MYSQL_USERNAME:-mysql}
+MYSQL_PASSWORD=${MYSQL_PASSWORD:-mysql}
 
 MYSQL_CHARSET=${MYSQL_CHARSET:-utf8}
 MYSQL_COLLATION=${MYSQL_COLLATION:-utf8_unicode_ci}
@@ -38,6 +38,7 @@ else
   rm -f /etc/service/mysql/down
 fi
 
+sed -i -e '/bind-address/d' /etc/mysql/mysql.conf.d/mysqld.cnf
 if [ -f "/etc/mysql/conf.d/mysqld-skip-name-resolv.cnf" ]; then
   echo "mysqld-skip-name-resolv.cnf already exists"
 else 

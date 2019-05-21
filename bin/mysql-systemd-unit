@@ -6,20 +6,29 @@ if [ "${DEBUG}" = true ]; then
   set -x
 fi
 
+VERSION=5.7
+
 DEF_PORT=80
 DEF_VOLUME_HOME=${VOLUME_HOME}
-DEF_VERSION=1.10.3
+DEF_NAME=mysql
+
 DEF_MYSQL_DATABASE=temp
 DEF_MYSQL_USERNAME=mysql
 DEF_MYSQL_PASSWORD=mysql
 
 PORT=${PORT:-$DEF_PORT}
 VOLUME_HOME=${VOLUME_HOME:-$DEF_VOLUME_HOME}
-VERSION=${VERSION:-$DEF_VERSION}
+NAME=${NAME:-$DEF_NAME}
 
 MYSQL_DATABASE=${MYSQL_DATABASE:-$DEF_MYSQL_DATABASE}
 MYSQL_USERNAME=${MYSQL_USERNAME:-$DEF_MYSQL_USERNAME}
 MYSQL_PASSWORD=${MYSQL_PASSWORD:-$DEF_MYSQL_PASSWORD}
+
+if [ -z ${PORT} ]; then
+  PORT_LINE=""
+else 
+  PORT_LINE="-p ${PORT}:3306 "
+fi
 
 /bin/cat <<-EOF
 [Unit]
@@ -30,25 +39,24 @@ After=docker.service
 [Service]
 TimeoutStartSec=0
 
-ExecStartPre=-/bin/mkdir -p ${VOLUME_HOME}/mysql/etc/conf.d
-ExecStartPre=-/bin/mkdir -p ${VOLUME_HOME}/mysql/lib
-ExecStartPre=-/bin/mkdir -p ${VOLUME_HOME}/mysql/log
-ExecStartPre=-/usr/bin/docker stop mysql
-ExecStartPre=-/usr/bin/docker rm mysql
-ExecStartPre=-/usr/bin/docker pull madharjan/docker-mysql:5.7
+ExecStartPre=-/bin/mkdir -p ${VOLUME_HOME}/${NAME}/etc/conf.d
+ExecStartPre=-/bin/mkdir -p ${VOLUME_HOME}/${NAME}/lib
+ExecStartPre=-/bin/mkdir -p ${VOLUME_HOME}/${NAME}/log
+ExecStartPre=-/usr/bin/docker stop ${NAME}
+ExecStartPre=-/usr/bin/docker rm ${NAME}
+ExecStartPre=-/usr/bin/docker pull madharjan/docker-mysql:${VERSION}
 
 ExecStart=/usr/bin/docker run \\
   -e MYSQL_DATABASE=${MYSQL_DATABASE} \\
   -e MYSQL_USERNAME=${MYSQL_USERNAME} \\
   -e MYSQL_PASSWORD=${MYSQL_PASSWORD} \\
-  -p ${PORT}:3306 \\
-  -v ${VOLUME_HOME}/mysql/etc/conf.d:/etc/mysql/conf.d \\
-  -v ${VOLUME_HOME}/mysql/lib/:/var/lib \\
-  -v ${VOLUME_HOME}/mysql/log:/var/log/mysql \\
-  --name mysql \\
-  madharjan/docker-mysql:5.7
+  ${PORT_LINE}-v ${VOLUME_HOME}/${NAME}/etc/conf.d:/etc/mysql/conf.d \\
+  -v ${VOLUME_HOME}/${NAME}/lib/:/var/lib/mysql \\
+  -v ${VOLUME_HOME}/${NAME}/log:/var/log/mysql \\
+  --name ${NAME} \\
+  madharjan/docker-mysql:${VERSION}
 
-ExecStop=/usr/bin/docker stop -t 2 mysql
+ExecStop=/usr/bin/docker stop -t 2 ${NAME}
 
 [Install]
 WantedBy=multi-user.target

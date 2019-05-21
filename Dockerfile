@@ -13,7 +13,7 @@ ENV MYSQL_VERSION ${MYSQL_VERSION}
 RUN mkdir -p /build
 COPY . /build
 
-RUN /build/scripts/install.sh && /build/scripts/cleanup.sh
+RUN chmod 755 /build/scripts/*.sh && /build/scripts/install.sh && /build/scripts/cleanup.sh
 
 VOLUME ["/etc/mysql/conf.d", "/var/lib/mysql", "/var/log/mysql"]
 

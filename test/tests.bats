@@ -19,7 +19,7 @@
 }
 
 @test "checking sql: mysql" {
-  skip "sample code"
+
   run docker exec mysql /bin/bash -c "mysql -N -s -e 'SHOW DATABASES;' | grep mydb"
   [ "$status" -eq 0 ]
   [ "$output" = "mydb" ]
