@@ -1,5 +1,5 @@
 
-NAME = madharjan/docker-mysql
+NAME = onezoom/docker-nginx-web2py-min-mysql
 VERSION = 5.7
 
 DEBUG ?= true

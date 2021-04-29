@@ -11,6 +11,8 @@ MYSQL_BUILD_PATH=/build/services/mysql
 
 ## Install MySQL Server
 apt-get install -y --no-install-recommends mysql-server
+pip3 install cryptography
+pip3 install pymysql
 
 rm -rf /var/lib/mysql
 rm -f /etc/mysql/conf.d/mysqld_safe_syslog.cnf

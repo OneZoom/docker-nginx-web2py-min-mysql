@@ -1,12 +1,12 @@
-FROM madharjan/docker-base:16.04
-MAINTAINER Madhav Raj Maharjan <madhav.maharjan@gmail.com>
+FROM onezoom/docker-nginx-web2py-min:2.21.1
+MAINTAINER OneZoom developers <mail@onezoom.org>
 
 ARG VCS_REF
 ARG MYSQL_VERSION
 ARG DEBUG=false
 
 LABEL description="Docker container for MySQL Server" os_version="Ubuntu ${UBUNTU_VERSION}" \
-      org.label-schema.vcs-ref=${VCS_REF} org.label-schema.vcs-url="https://github.com/madharjan/docker-mysql"
+      org.label-schema.vcs-ref=${VCS_REF} org.label-schema.vcs-url="https://github.com/onezoom/docker-nginx-web2py-min-mysql"
 
 ENV MYSQL_VERSION ${MYSQL_VERSION}
 

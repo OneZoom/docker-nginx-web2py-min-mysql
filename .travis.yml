@@ -3,7 +3,7 @@ branches:
   only:
   - master
 
-dist: trusty
+dist: bionic
 language: minimal
 
 jobs:

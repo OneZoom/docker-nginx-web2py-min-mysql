@@ -44,7 +44,7 @@ ExecStartPre=-/bin/mkdir -p ${VOLUME_HOME}/${NAME}/lib
 ExecStartPre=-/bin/mkdir -p ${VOLUME_HOME}/${NAME}/log
 ExecStartPre=-/usr/bin/docker stop ${NAME}
 ExecStartPre=-/usr/bin/docker rm ${NAME}
-ExecStartPre=-/usr/bin/docker pull madharjan/docker-mysql:${VERSION}
+ExecStartPre=-/usr/bin/docker pull onezoom/docker-nginx-web2py-min-mysql:${VERSION}
 
 ExecStart=/usr/bin/docker run \\
   -e MYSQL_DATABASE=${MYSQL_DATABASE} \\
@@ -54,7 +54,7 @@ ExecStart=/usr/bin/docker run \\
   -v ${VOLUME_HOME}/${NAME}/lib/:/var/lib/mysql \\
   -v ${VOLUME_HOME}/${NAME}/log:/var/log/mysql \\
   --name ${NAME} \\
-  madharjan/docker-mysql:${VERSION}
+  onezoom/docker-nginx-web2py-min-mysql:${VERSION}
 
 ExecStop=/usr/bin/docker stop -t 2 ${NAME}
 

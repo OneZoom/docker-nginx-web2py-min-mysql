@@ -1,31 +1,42 @@
-# docker-mysql
+# docker-nginx-web2py-min-mysql
 
-[![Build Status](https://travis-ci.com/madharjan/docker-mysql.svg?branch=master)](https://travis-ci.com/madharjan/docker-mysql)
-[![Layers](https://images.microbadger.com/badges/image/madharjan/docker-mysql.svg)](http://microbadger.com/images/madharjan/docker-mysql)
+[![Build Status](https://travis-ci.com/onezoom/docker-mysql.svg?branch=master)](https://travis-ci.com/onezoom/docker-mysql)
+[![Layers](https://images.microbadger.com/badges/image/onezoom/docker-mysql.svg)](http://microbadger.com/images/onezoom/docker-mysql)
 
-Docker container for MySQL Server based on [madharjan/docker-base](https://github.com/madharjan/docker-base/)
+Docker container for nginx+uwsgi with web2py using python 3 on Ubuntu 18.04 and a MySQL server, based on [onezoom/docker-nginx-web2py-min](https://github.com/onezoom/docker-nginx-web2py) with MySQL Server layer based on [madharjan/docker-mysql](https://github.com/madharjan/docker-mysql/)
 
 ## Features
 
+* Environment variables to set web2py admin password
+* User-provided appconfig.ini file can be specified
 * Environment variables to create database, user and set password
 * Bats [bats-core/bats-core](https://github.com/bats-core/bats-core) based test cases
 
-## MySQL Server 5.7 (docker-mysql)
+## MySQL Server 5.7 (docker-nginx-web2py-min-mysql)
 
 ### Environment
 
-| Variable        | Default      | Example        |
-|-----------------|--------------|----------------|
-| DISABLE_MYSQL   | 0            | 1 (to disable) |
-| MYSQL_DATABASE  | temp         | mydb           |
-| MYSQL_USERNAME  | mysql        | myuser         |
-| MYSQL_PASSWORD  | mysql        | mypass         |
+| Variable                  | Default | Example                                                                |
+|---------------------------|---------|------------------------------------------------------------------------|
+| DISABLE_MYSQL             | 0       | 1 (to disable)                                                         |
+| MYSQL_DATABASE            | temp    | mydb                                                                   |
+| MYSQL_USERNAME            | mysql   | myuser                                                                 |
+| MYSQL_PASSWORD            | mysql   | mypass                                                                 |
+|                           |         |                                                                        |
+| WEB2PY_ADMIN              |         | Pa55w0rd                                                               |
+| DISABLE_UWSGI             | 0       | 1 (to disable)                                                         |
+|                           |         |                                                                        |
+| INSTALL_PROJECT           | 0       | 1 (to enable)                                                          |
+| PROJECT_GIT_REPO          |         | [https://github.com/OneZoom/OZtree](https://github.com/OneZoom/OZtree) |
+| PROJECT_GIT_TAG           | HEAD    | v5.1.4                                                                 |
+| PROJECT_APPCONFIG_INI_PATH|         | /etc/appconfig.ini                                                     |
+
 
 ## Build
 
 ```bash
 # clone project
-git clone https://github.com/madharjan/docker-mysql
+git clone https://github.com/onezoom/docker-nginx-web2py-min-mysql
 cd docker-mysql
 
 # build
@@ -63,7 +74,7 @@ docker run -d \
   -v /opt/docker/mysql/lib:/var/lib/mysql \
   -v /opt/docker/mysql/log:/var/log/mysql \
   --name mysql \
-  madharjan/docker-mysql:5.5
+  onezoom/docker-nginx-web2py-min-mysql:5.7
 ```
 
 ## Systemd Unit File
@@ -84,7 +95,7 @@ ExecStartPre=-/bin/mkdir -p /opt/docker/mysql/lib
 ExecStartPre=-/bin/mkdir -p /opt/docker/mysql/log
 ExecStartPre=-/usr/bin/docker stop mysql
 ExecStartPre=-/usr/bin/docker rm mysql
-ExecStartPre=-/usr/bin/docker pull madharjan/docker-mysql:5.7
+ExecStartPre=-/usr/bin/docker pull onezoom/docker-nginx-web2py-min-mysql:5.7
 
 ExecStart=/usr/bin/docker run \
   -e MYSQL_DATABASE=mydb \
@@ -95,7 +106,7 @@ ExecStart=/usr/bin/docker run \
   -v /opt/docker/mysql/lib/:/var/lib/mysql \
   -v /opt/docker/mysql/log:/var/log/mysql \
   --name mysql \
-  madharjan/docker-mysql:5.7
+  onezoom/docker-nginx-web2py-min-mysql:5.7
 
 ExecStop=/usr/bin/docker stop -t 2 mysql
 
@@ -115,7 +126,7 @@ WantedBy=multi-user.target
 | MYSQL_PASSWORD      | mysql            | pass                                                             |
 
 ```bash
-# generate postgresql.service
+# generate mysql.service
 docker run --rm \
   -e PORT=3306 \
   -e VOLUME_HOME=/opt/docker \
@@ -123,7 +134,7 @@ docker run --rm \
   -e MYSQL_DATABASE=mydb \
   -e MYSQL_USERNAME=user \
   -e MYSQL_PASSWORD=pass \
-  madharjan/docker-mysql:5.7 \
+  onezoom/docker-nginx-web2py-min-mysql:5.7 \
   mysql-systemd-unit | \
   sudo tee /etc/systemd/system/mysql.service
 
