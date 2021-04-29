@@ -1,6 +1,6 @@
 
 NAME = onezoom/docker-nginx-web2py-min-mysql
-VERSION = 5.7
+VERSION = 2.21.1_5.7
 
 DEBUG ?= true
 

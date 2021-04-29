@@ -3,7 +3,7 @@ branches:
   only:
   - master
 
-dist: bionic
+dist: focal
 language: minimal
 
 jobs:

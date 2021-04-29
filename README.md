@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.com/onezoom/docker-mysql.svg?branch=master)](https://travis-ci.com/onezoom/docker-mysql)
 [![Layers](https://images.microbadger.com/badges/image/onezoom/docker-mysql.svg)](http://microbadger.com/images/onezoom/docker-mysql)
 
-Docker container for nginx+uwsgi with web2py using python 3 on Ubuntu 18.04 and a MySQL server, based on [onezoom/docker-nginx-web2py-min](https://github.com/onezoom/docker-nginx-web2py) with MySQL Server layer based on [madharjan/docker-mysql](https://github.com/madharjan/docker-mysql/)
+Docker container for nginx+uwsgi with web2py using python 3.8 on Ubuntu 20.04 and a MySQL server, based on [onezoom/docker-nginx-web2py-min](https://github.com/onezoom/docker-nginx-web2py) with MySQL Server layer based on [madharjan/docker-mysql](https://github.com/madharjan/docker-mysql/)
 
 ## Features
 
