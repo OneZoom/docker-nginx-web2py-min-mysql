@@ -76,7 +76,7 @@ if [ ! -d ${MYSQL_DATA_DIR}/mysql ]; then
 
   echo "Creating debian-sys-maint user ..."
   mysql -uroot -e "CREATE USER 'debian-sys-maint'@'localhost' IDENTIFIED BY '';"
-  mysql -uroot -e "GRANT ALL PRIVILEGES on *.* TO 'debian-sys-maint'@'localhost' IDENTIFIED BY '' WITH GRANT OPTION;"
+  mysql -uroot -e "GRANT ALL PRIVILEGES on *.* TO 'debian-sys-maint'@'localhost' WITH GRANT OPTION;"
 
   /usr/bin/mysqladmin --defaults-file=/etc/mysql/debian.cnf shutdown
 fi
@@ -105,7 +105,9 @@ if [ -n "${MYSQL_DATABASE}" -o -n "${MYSQL_USERNAME}" ]; then
     if [ -n "${MYSQL_USERNAME}" ]; then
       echo "Granting access to database \"${MYSQL_DATABASE}\" for user \"${MYSQL_USERNAME}\"..."
       mysql --defaults-file=/etc/mysql/debian.cnf \
-        -e "GRANT ALL PRIVILEGES on \`${MYSQL_DATABASE}\`.* TO '${MYSQL_USERNAME}' IDENTIFIED BY '${MYSQL_PASSWORD}';"
+        -e "CREATE USER '${MYSQL_USERNAME}'@'localhost' IDENTIFIED BY '${MYSQL_PASSWORD}';"
+      mysql --defaults-file=/etc/mysql/debian.cnf \
+        -e "GRANT ALL PRIVILEGES on \`${MYSQL_DATABASE}\`.* TO '${MYSQL_USERNAME}'@'localhost';"
     fi
   fi
 
