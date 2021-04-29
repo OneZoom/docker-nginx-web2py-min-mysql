@@ -105,9 +105,9 @@ if [ -n "${MYSQL_DATABASE}" -o -n "${MYSQL_USERNAME}" ]; then
     if [ -n "${MYSQL_USERNAME}" ]; then
       echo "Granting access to database \"${MYSQL_DATABASE}\" for user \"${MYSQL_USERNAME}\"..."
       mysql --defaults-file=/etc/mysql/debian.cnf \
-        -e "CREATE USER '${MYSQL_USERNAME}'@'localhost' IDENTIFIED BY '${MYSQL_PASSWORD}';"
+        -e "CREATE USER '${MYSQL_USERNAME}' IDENTIFIED BY '${MYSQL_PASSWORD}';"
       mysql --defaults-file=/etc/mysql/debian.cnf \
-        -e "GRANT ALL PRIVILEGES on \`${MYSQL_DATABASE}\`.* TO '${MYSQL_USERNAME}'@'localhost';"
+        -e "GRANT ALL PRIVILEGES on \`${MYSQL_DATABASE}\`.* TO '${MYSQL_USERNAME}';"
     fi
   fi
 
