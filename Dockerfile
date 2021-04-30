@@ -1,4 +1,4 @@
-FROM onezoom/docker-nginx-web2py-min:latest
+FROM onezoom/docker-nginx-web2py-min:2.21.1
 MAINTAINER OneZoom developers <mail@onezoom.org>
 
 ARG VCS_REF
