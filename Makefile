@@ -42,23 +42,23 @@ run:
 		-e DEBUG=$(DEBUG) \
 		--name mysql $(NAME):$(VERSION)
 
-	sleep 2
+	sleep 5
 
 	docker run -d \
 		-e DISABLE_MYSQL=1 \
 		-e DEBUG=$(DEBUG) \
 		--name mysql_no_mysql $(NAME):$(VERSION)
 
-	sleep 1
+	sleep 2
 
 	docker run -d \
 		-e DEBUG=$(DEBUG) \
 		--name mysql_default $(NAME):$(VERSION)
 
-	sleep 4
+	sleep 6
 
 test:
-	sleep 10
+	sleep 40
 	./bats/bin/bats test/tests.bats
 
 stop:
