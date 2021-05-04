@@ -38,6 +38,13 @@ else
   rm -f /etc/service/mysql/down
 fi
 
+if [ -f "/etc/mysql/conf.d/mysqld.cnf" ]; then
+  echo "mysqld.cnf already exists"
+else
+  echo "[mysqld]" > /etc/mysql/conf.d/mysqld.cnf
+  echo "datadir=${MYSQL_DATA_DIR}" >> /etc/mysql/conf.d/mysqld.cnf
+fi
+
 sed -i -e '/bind-address/d' /etc/mysql/mysql.conf.d/mysqld.cnf
 if [ -f "/etc/mysql/conf.d/mysqld-skip-name-resolv.cnf" ]; then
   echo "mysqld-skip-name-resolv.cnf already exists"
